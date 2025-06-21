@@ -22,6 +22,9 @@ dependencyResolutionManagement {
             url = uri("file:C:/Users/KNS/AndroidStudioProjects/OwlGame/app/build/repo")
         }
         maven {
+            url = uri("file:C:/Users/KNS/AndroidStudioProjects/Todos/app/build/repo")
+        }
+        maven {
             url = uri("https://maven.pkg.github.com/anastas-makar/DiamondApi")
             credentials {
                 username = System.getenv("GITHUB_USERNAME")

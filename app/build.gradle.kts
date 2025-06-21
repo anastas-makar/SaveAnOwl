@@ -96,6 +96,7 @@ dependencies {
     implementation("pro.progr:owlgame:0.0.1-alpha")
     implementation("pro.progr:fallingdiamonds:1.0.0-alpha")
     implementation("pro.progr:diamond-api:1.0.0-alpha")
+    implementation("pro.progr:todos:0.0.1-alpha")
 
     // Uncomment if needed
     // implementation("com.google.dagger:dagger-android:2.48")
