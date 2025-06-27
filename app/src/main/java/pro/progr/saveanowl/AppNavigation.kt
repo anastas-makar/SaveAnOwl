@@ -26,7 +26,7 @@ fun AppNavigation(diamondViewModel: DiamondViewModel, diamondsCountRepository: D
             TodosNavigation(
                 appDrawer = { a, b, c, d -> AppDrawer(a, b, c, d) },
                 diamondViewModel = diamondViewModel,
-                navController = navController,
+                externalNavController = navController,
                 drawerState = drawerState
             )
         }
