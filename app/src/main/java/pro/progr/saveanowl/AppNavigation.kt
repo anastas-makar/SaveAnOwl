@@ -20,21 +20,22 @@ fun AppNavigation(diamondsCountRepository: DiamondsCountRepository,
                   todosDaggerVmFactory: DaggerViewModelFactory
 ) {
     val navController = rememberNavController()
+    val diamondViewModel : DiamondViewModel = viewModel(factory = todosDaggerVmFactory)
 
     NavHost(navController = navController, startDestination = "todos") {
         composable("todos") {
             TodosNavigation(
                 appDrawer = { a, b, c, d -> AppDrawer(a, b, c, d) },
-                externalNavController = navController
+                externalNavController = navController,
+                diamondViewModel = diamondViewModel
             )
         }
 
         //Навигация в модуле "Falling Diamonds"
         composable("sunduk") { backStackEntry ->
-            val vm : DiamondViewModel = viewModel(factory = todosDaggerVmFactory)
             SundukScreen(
                 { navController.popBackStack() },
-                vm)
+                diamondViewModel)
         }
 
         //Навигация в модуле "Спаси сову"
