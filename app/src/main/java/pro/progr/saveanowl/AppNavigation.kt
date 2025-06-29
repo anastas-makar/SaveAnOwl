@@ -1,20 +1,24 @@
 package pro.progr.saveanowl
 
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import pro.progr.fallingdiamonds.composable.SundukScreen
 import pro.progr.owlgame.presentation.navigation.OwlNavigation
+import pro.progr.todos.DiamondViewModel
 import pro.progr.todos.DiamondsCountRepository
 import pro.progr.todos.TodosNavigation
+import pro.progr.todos.dagger2.DaggerViewModelFactory
 
-@OptIn(ExperimentalMaterialApi::class)
 @kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
-fun AppNavigation(diamondsCountRepository: DiamondsCountRepository) {
+fun AppNavigation(diamondsCountRepository: DiamondsCountRepository,
+                  todosDaggerVmFactory: DaggerViewModelFactory
+) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "todos") {
@@ -23,6 +27,14 @@ fun AppNavigation(diamondsCountRepository: DiamondsCountRepository) {
                 appDrawer = { a, b, c, d -> AppDrawer(a, b, c, d) },
                 externalNavController = navController
             )
+        }
+
+        //Навигация в модуле "Falling Diamonds"
+        composable("sunduk") { backStackEntry ->
+            val vm : DiamondViewModel = viewModel(factory = todosDaggerVmFactory)
+            SundukScreen(
+                { navController.popBackStack() },
+                vm)
         }
 
         //Навигация в модуле "Спаси сову"

@@ -11,9 +11,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val diamondsCountRepository =
             (application as SaveAnOwlApplication).todosComponent.diamondsCountRepository()
+        val todosDaggerVmFactory = (application as SaveAnOwlApplication).todosComponent.daggerViewModelFactory()
 
         setContent {
-            AppNavigation(diamondsCountRepository = diamondsCountRepository)
+            AppNavigation(diamondsCountRepository = diamondsCountRepository,
+                todosDaggerVmFactory = todosDaggerVmFactory)
         }
 
     }
