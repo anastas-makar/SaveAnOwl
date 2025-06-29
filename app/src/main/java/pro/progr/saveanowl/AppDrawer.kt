@@ -10,13 +10,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import pro.progr.diamondapi.GetDiamondsCountInterface
 import pro.progr.fallingdiamonds.composable.SundukDrawerWidget
 import pro.progr.owlgame.presentation.ui.WidgetScreen
-import pro.progr.todos.DiamondViewModel
 
 @Composable
 fun AppDrawer(drawerState: DrawerState,
-              viewModel: DiamondViewModel,
+              viewModel: GetDiamondsCountInterface,
               navController: NavHostController,
               content : @Composable () -> Unit) {
 

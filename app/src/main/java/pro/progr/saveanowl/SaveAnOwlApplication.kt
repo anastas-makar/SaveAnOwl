@@ -2,6 +2,9 @@ package pro.progr.saveanowl
 
 import android.app.Application
 import pro.progr.owlgame.worker.GameWorkerSetup
+import pro.progr.todos.dagger2.AppModule
+import pro.progr.todos.dagger2.DaggerTodosComponent
+import pro.progr.todos.dagger2.TodosComponent
 
 class SaveAnOwlApplication : Application() {
 
@@ -9,20 +12,16 @@ class SaveAnOwlApplication : Application() {
         DaggerSaveAnOwlComponent.factory().create(applicationContext)
     }
 
+    val todosComponent: TodosComponent by lazy {
+        DaggerTodosComponent.builder()
+            .application(this)                       // @BindsInstance
+            .appModule(AppModule(this))
+            .build()
+    }
+
     override fun onCreate() {
         super.onCreate()
         appComponent.inject(this)
-
-        /*        val workRequest = PeriodicWorkRequestBuilder<HistoryWorker>(8, TimeUnit.HOURS)
-                    .build()
-
-                WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-                    "dailyWork",
-                    ExistingPeriodicWorkPolicy.KEEP,
-                    workRequest
-                )*/
-
-        //запуск workmanager для игрового модуля
         GameWorkerSetup.scheduleWork(baseContext)
     }
 }
