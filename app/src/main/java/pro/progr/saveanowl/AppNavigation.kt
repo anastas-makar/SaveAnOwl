@@ -17,12 +17,13 @@ import pro.progr.todos.dagger2.DaggerViewModelFactory
 @kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun AppNavigation(diamondsCountRepository: DiamondsCountRepository,
-                  todosDaggerVmFactory: DaggerViewModelFactory
+                  todosDaggerVmFactory: DaggerViewModelFactory,
+                  startDestination: String = "todos"
 ) {
     val navController = rememberNavController()
     val diamondViewModel : DiamondViewModel = viewModel(factory = todosDaggerVmFactory)
 
-    NavHost(navController = navController, startDestination = "todos") {
+    NavHost(navController = navController, startDestination = startDestination) {
         composable("todos") {
             TodosNavigation(
                 appDrawer = { a, b, c, d -> AppDrawer(a, b, c, d) },
