@@ -63,7 +63,7 @@ fun AppNavigation(diamondsCountRepository: DiamondsCountRepository,
             val id = backStackEntry.arguments?.getString("id")
 
             OwlNavigation(startDestination = "animal_searching/$id", diamondDao = diamondsCountRepository,
-                backToMain = { navController.navigate("calendar") })
+                backToMain = { navController.navigate("todos") })
 
         }
 
