@@ -1,6 +1,5 @@
 package pro.progr.saveanowl
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,7 +10,6 @@ import androidx.compose.material.ModalDrawer
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import pro.progr.diamondapi.GetDiamondsCountInterface
@@ -32,8 +30,7 @@ fun AppDrawer(drawerState: DrawerState,
                 .padding(top = 100.dp)) {
                 Card(modifier = Modifier
                     .padding(5.dp)
-                    .fillMaxWidth()
-                    .background(color = Color.Unspecified)) {
+                    .fillMaxWidth()) {
                     SundukDrawerWidget(
                         diamondsTotal = viewModel.getDiamondsCount().collectAsState(initial = 0),
                         {navController.navigate("sunduk")})
