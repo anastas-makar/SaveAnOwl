@@ -92,6 +92,8 @@ dependencies {
 
     implementation("io.coil-kt:coil-compose:2.7.0")
 
+    implementation("androidx.lifecycle:lifecycle-process:2.8.4")
+
     implementation("pro.progr:flow:0.1.0-alpha")
     implementation("pro.progr:owlgame:0.0.1-alpha")
     implementation("pro.progr:fallingdiamonds:1.0.0-alpha")
