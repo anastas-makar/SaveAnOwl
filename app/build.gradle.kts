@@ -1,8 +1,13 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
 }
+
+val lp = gradleLocalProperties(rootDir)
 
 android {
     compileSdk = 35
@@ -18,6 +23,14 @@ android {
             useSupportLibrary = true
         }
     }
+    signingConfigs {
+        create("release") {
+            storeFile = file(lp.getProperty("RELEASE_STORE_FILE") ?: "")
+            storePassword = lp.getProperty("RELEASE_STORE_PASSWORD")
+            keyAlias = lp.getProperty("RELEASE_KEY_ALIAS")
+            keyPassword = lp.getProperty("RELEASE_KEY_PASSWORD")
+        }
+    }
 
     buildTypes {
         getByName("release") {
@@ -26,6 +39,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
         getByName("debug") {
             isMinifyEnabled = true
