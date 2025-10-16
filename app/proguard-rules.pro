@@ -108,6 +108,10 @@
 # todos *
 -keep class pro.progr.todos.** { *; }
 
+# vk
+-keep class com.vk.id.** { *; }
+-keep class com.vk.api.** { *; }      # VK API обёртки
+
 # Prevent obfuscation of generated Dagger code
 -dontwarn dagger.**
 -dontwarn pro.progr.owlgame.**
