@@ -3,6 +3,8 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+        maven(url = "https://artifactory-external.vkpartner.ru/artifactory/vkid-sdk-android/")
+        maven(url = "https://artifactory-external.vkpartner.ru/artifactory/maven/")
     }
 }
 
@@ -30,6 +32,18 @@ dependencyResolutionManagement {
                 username = System.getenv("GITHUB_USERNAME")
                 password = System.getenv("GITHUB_TOKEN")
             }
+        }
+
+        maven {
+            url =
+                uri("https://artifactory-external.vkpartner.ru/artifactory/vkid-sdk-android/")
+        }
+        maven {
+            url = uri("https://artifactory-external.vkpartner.ru/artifactory/maven/")
+        }
+        maven {
+            url =
+                uri("https://artifactory-external.vkpartner.ru/artifactory/vk-id-captcha/android/")
         }
     }
 }

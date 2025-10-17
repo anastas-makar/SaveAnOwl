@@ -5,6 +5,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
+    id("vkid.manifest.placeholders")
 }
 
 val lp = gradleLocalProperties(rootDir)
@@ -117,6 +118,8 @@ dependencies {
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
+
+    implementation("com.vk.id:vkid:2.5.1")
 
     // Uncomment if needed
     // implementation("com.google.dagger:dagger-android:2.48")
