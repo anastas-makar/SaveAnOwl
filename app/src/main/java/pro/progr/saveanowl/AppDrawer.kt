@@ -14,6 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import pro.progr.diamondapi.GetDiamondsCountInterface
 import pro.progr.fallingdiamonds.composable.SundukDrawerWidget
@@ -22,7 +23,7 @@ import pro.progr.owlgame.presentation.ui.WidgetScreen
 @Composable
 fun AppDrawer(
     drawerState: DrawerState,
-    viewModel: GetDiamondsCountInterface,
+    diamondViewModel: GetDiamondsCountInterface,
     navController: NavHostController,
     content: @Composable () -> Unit
 ) {
@@ -33,6 +34,8 @@ fun AppDrawer(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
+                val vkVm: VkAuthViewModel = viewModel()
+                VkLoginButton(vkVm, modifier = Modifier.padding(16.dp))
 
                 // Две колонки сверху
                 Row(
@@ -48,7 +51,7 @@ fun AppDrawer(
                             .weight(1f)
                     ) {
                         SundukDrawerWidget(
-                            diamondsTotal = viewModel.getDiamondsCount()
+                            diamondsTotal = diamondViewModel.getDiamondsCount()
                                 .collectAsState(initial = 0),
                             { navController.navigate("sunduk") }
                         )
@@ -60,7 +63,7 @@ fun AppDrawer(
                             .weight(1f)
                     ) {
                         SundukDrawerWidget(
-                            diamondsTotal = viewModel.getDiamondsCount()
+                            diamondsTotal = diamondViewModel.getDiamondsCount()
                                 .collectAsState(initial = 0),
                             { navController.navigate("sunduk") }
                         )
