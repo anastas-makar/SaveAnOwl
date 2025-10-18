@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.vk.id.VKID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,6 +23,8 @@ class MainActivity : ComponentActivity() {
         val diamondsCountRepository =
             (application as SaveAnOwlApplication).todosComponent.diamondsCountRepository()
         val todosDaggerVmFactory = (application as SaveAnOwlApplication).todosComponent.daggerViewModelFactory()
+
+        VKID.init(this)
 
         appScope.launch {
             try {
