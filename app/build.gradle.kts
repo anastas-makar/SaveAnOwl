@@ -114,6 +114,7 @@ dependencies {
     implementation("pro.progr:fallingdiamonds:1.0.0-alpha")
     implementation("pro.progr:diamond-api:1.0.0-alpha")
     implementation("pro.progr:todos:0.0.1-alpha")
+    implementation("pro.progr:diamondtimer:1.0.0-alpha")
 
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
     implementation("com.squareup.okhttp3:okhttp")

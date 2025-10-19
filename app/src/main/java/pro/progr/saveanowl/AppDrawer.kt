@@ -18,6 +18,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import pro.progr.diamondapi.GetDiamondsCountInterface
 import pro.progr.fallingdiamonds.composable.SundukDrawerWidget
+import pro.progr.diamondtimer.TimerDrawerWidget
 import pro.progr.owlgame.presentation.ui.WidgetScreen
 
 @Composable
@@ -62,7 +63,7 @@ fun AppDrawer(
                         modifier = Modifier
                             .weight(1f)
                     ) {
-                        SundukDrawerWidget(
+                        TimerDrawerWidget(
                             diamondsTotal = diamondViewModel.getDiamondsCount()
                                 .collectAsState(initial = 0),
                             { navController.navigate("sunduk") }
