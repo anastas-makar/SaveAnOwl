@@ -66,7 +66,7 @@ fun AppDrawer(
                         TimerDrawerWidget(
                             diamondsTotal = diamondViewModel.getDiamondsCount()
                                 .collectAsState(initial = 0),
-                            { navController.navigate("sunduk") }
+                            { navController.navigate("timer") }
                         )
                     }
 

@@ -7,6 +7,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import pro.progr.diamondtimer.TimerScreen
+import pro.progr.diamondtimer.TimerViewModel
+import pro.progr.diamondtimer.TimerViewModelFactory
 import pro.progr.fallingdiamonds.composable.SundukScreen
 import pro.progr.owlgame.presentation.navigation.OwlNavigation
 import pro.progr.todos.DiamondViewModel
@@ -37,6 +40,27 @@ fun AppNavigation(diamondsCountRepository: DiamondsCountRepository,
             SundukScreen(
                 { navController.popBackStack() },
                 diamondViewModel)
+        }
+
+        //Навигация в модуле "Diamond Timer"
+        composable("timer") { backStackEntry ->
+            val vm: TimerViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
+                factory = TimerViewModelFactory(diamondViewModel, minutes = 25, reward = 10)
+            )
+
+            TimerScreen(
+                state = vm.state,
+                diamondsCount = vm.diamondsCount,
+                onStart = vm::start,
+                onPause = vm::pause,
+                onResume = vm::resume,
+                onReset = vm::reset,
+                onRestart = vm::restart,
+                onClaim = vm::claim,
+                onClaimAndRestart = vm::claimAndRestart,
+                onChangeDurationMinutes = vm::setDurationMinutes,
+                onChangeReward = vm::setReward
+            )
         }
 
         //Навигация в модуле "Спаси сову"
