@@ -122,6 +122,8 @@ dependencies {
 
     implementation("com.vk.id:vkid:2.5.1")
 
+    implementation("com.squareup.retrofit2:converter-moshi:2.11.0")
+
     // Uncomment if needed
     // implementation("com.google.dagger:dagger-android:2.48")
     // implementation("com.google.dagger:dagger-android-support:2.48")

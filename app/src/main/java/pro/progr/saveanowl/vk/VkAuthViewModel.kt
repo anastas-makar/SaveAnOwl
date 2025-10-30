@@ -1,4 +1,4 @@
-package pro.progr.saveanowl
+package pro.progr.saveanowl.vk
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
