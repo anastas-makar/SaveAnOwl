@@ -1,6 +1,6 @@
 package pro.progr.saveanowl.vk
 
-data class VkAuthResponse(
+data class AuthVkResponse(
     val appUserId: String,
     val sessionId: String,
     val expiresAt: String,

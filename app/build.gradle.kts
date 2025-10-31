@@ -23,6 +23,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        buildConfigField("String", "API_BASE_URL", "\"${lp.getProperty("API_BASE_URL")}\"")
     }
     signingConfigs {
         create("release") {
@@ -53,6 +54,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     composeOptions {
@@ -121,8 +123,6 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor")
 
     implementation("com.vk.id:vkid:2.5.1")
-
-    implementation("com.squareup.retrofit2:converter-moshi:2.11.0")
 
     // Uncomment if needed
     // implementation("com.google.dagger:dagger-android:2.48")

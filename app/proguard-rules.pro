@@ -111,6 +111,8 @@
 # vk
 -keep class com.vk.id.** { *; }
 -keep class com.vk.api.** { *; }      # VK API обёртки
+-keep class pro.progr.saveanowl.vk.** { *; }
+-keepattributes Signature, *Annotation*
 
 # Prevent obfuscation of generated Dagger code
 -dontwarn dagger.**

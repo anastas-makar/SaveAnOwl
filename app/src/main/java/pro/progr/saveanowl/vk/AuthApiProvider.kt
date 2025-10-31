@@ -1,11 +1,11 @@
 package pro.progr.saveanowl.vk
 
-import com.squareup.moshi.Moshi
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import pro.progr.saveanowl.BuildConfig
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object AuthApiProvider {
@@ -22,9 +22,9 @@ object AuthApiProvider {
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl(BuildConfig.AUTH_BASE_URL) // должен оканчиваться на /
+            .baseUrl(BuildConfig.API_BASE_URL) // должен оканчиваться на /
             .client(client)
-            .addConverterFactory(MoshiConverterFactory.create(Moshi.Builder().build()))
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .build()
     }
 

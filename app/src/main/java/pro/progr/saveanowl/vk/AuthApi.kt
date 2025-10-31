@@ -6,5 +6,5 @@ import retrofit2.http.POST
 
 interface AuthApi {
     @POST("auth/vk")
-    suspend fun signIn(@Body body: VkAuthRequest): Response<VkAuthResponse>
+    suspend fun signIn(@Body body: AuthVkRequest): Response<AuthVkResponse>
 }
