@@ -20,8 +20,8 @@ import pro.progr.diamondapi.GetDiamondsCountInterface
 import pro.progr.fallingdiamonds.composable.SundukDrawerWidget
 import pro.progr.diamondtimer.TimerDrawerWidget
 import pro.progr.owlgame.presentation.ui.WidgetScreen
-import pro.progr.saveanowl.vk.VkAuthViewModel
-import pro.progr.saveanowl.vk.VkLoginButton
+import pro.progr.saveanowl.auth.VkAuthViewModel
+import pro.progr.saveanowl.auth.VkLoginButton
 
 @Composable
 fun AppDrawer(

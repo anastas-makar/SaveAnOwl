@@ -1,4 +1,4 @@
-package pro.progr.saveanowl.vk
+package pro.progr.saveanowl.auth
 
 import retrofit2.Response
 import retrofit2.http.Body

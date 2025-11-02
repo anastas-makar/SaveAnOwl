@@ -1,4 +1,4 @@
-package pro.progr.saveanowl.vk
+package pro.progr.saveanowl.auth
 
 sealed class AuthState {
     data object Idle : AuthState()

@@ -1,4 +1,4 @@
-package pro.progr.saveanowl.vk
+package pro.progr.saveanowl.auth
 
 import androidx.compose.material.Button
 import androidx.compose.material.Text

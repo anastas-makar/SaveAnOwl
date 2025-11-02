@@ -1,4 +1,4 @@
-package pro.progr.saveanowl.vk
+package pro.progr.saveanowl.auth
 
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient

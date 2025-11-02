@@ -1,4 +1,4 @@
-package pro.progr.saveanowl.vk
+package pro.progr.saveanowl.auth
 
 data class AuthVkResponse(
     val appUserId: String,
