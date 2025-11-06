@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import pro.progr.diamondapi.AuthInterface
 import pro.progr.diamondtimer.TimerScreen
 import pro.progr.diamondtimer.TimerViewModel
 import pro.progr.diamondtimer.TimerViewModelFactory
@@ -21,6 +22,7 @@ import pro.progr.todos.dagger2.DaggerViewModelFactory
 @Composable
 fun AppNavigation(diamondsCountRepository: DiamondsCountRepository,
                   todosDaggerVmFactory: DaggerViewModelFactory,
+                  auth: AuthInterface,
                   startDestination: String = "todos"
 ) {
     val navController = rememberNavController()
@@ -31,7 +33,8 @@ fun AppNavigation(diamondsCountRepository: DiamondsCountRepository,
             TodosNavigation(
                 appDrawer = { a, b, c, d -> AppDrawer(a, b, c, d) },
                 externalNavController = navController,
-                diamondViewModel = diamondViewModel
+                diamondViewModel = diamondViewModel,
+                auth = auth
             )
         }
 
