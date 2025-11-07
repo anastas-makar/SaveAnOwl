@@ -1,8 +1,7 @@
 package pro.progr.saveanowl.auth
 
 data class AuthVkResponse(
-    val appUserId: String,
     val sessionId: String,
-    val expiresAt: String,
-    val isNewUser: Boolean
+    val sessionSecret: String,//приходит один раз при успешной авторизации, хранится на устройстве в зашифрованном виде
+    val name: String?
 )
