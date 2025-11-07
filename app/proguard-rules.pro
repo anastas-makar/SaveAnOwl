@@ -114,6 +114,12 @@
 -keep class pro.progr.saveanowl.auth.** { *; }
 -keepattributes Signature, *Annotation*
 
+#workmanager
+-keepnames class ** extends androidx.work.ListenableWorker
+-keepclassmembers class ** extends androidx.work.ListenableWorker {
+    public <init>(android.content.Context, androidx.work.WorkerParameters);
+}
+
 # Prevent obfuscation of generated Dagger code
 -dontwarn dagger.**
 -dontwarn pro.progr.owlgame.**

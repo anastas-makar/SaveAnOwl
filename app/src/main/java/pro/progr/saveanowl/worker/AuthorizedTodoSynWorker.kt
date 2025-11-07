@@ -6,7 +6,7 @@ import androidx.work.WorkerParameters
 import pro.progr.saveanowl.auth.Auth
 import pro.progr.todos.work.doTodoSyncWork
 
-class AuthorisedTodoSynWorker(
+class AuthorizedTodoSynWorker(
     appContext: Context,
     params: WorkerParameters
 ) : CoroutineWorker(appContext, params) {

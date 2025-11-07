@@ -6,7 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import pro.progr.owlgame.worker.GameWorkerSetup
 import pro.progr.saveanowl.auth.Auth
-import pro.progr.saveanowl.worker.AuthorisedTodoSynWorker
+import pro.progr.saveanowl.worker.AuthorizedTodoSynWorker
 import pro.progr.todos.dagger2.AppModule
 import pro.progr.todos.dagger2.DaggerTodosComponent
 import pro.progr.todos.dagger2.TodosComponent
@@ -41,7 +41,7 @@ class SaveAnOwlApplication : Application(), DefaultLifecycleObserver {
     // Приложение ушло в фон (все активити стали STOPPED)
     override fun onStop(owner: LifecycleOwner) {
         // Запускаем фоновый синк через твой helper из модуля todos
-        SyncWorkerSetup.enqueueBackgroundSync<AuthorisedTodoSynWorker>(applicationContext)
+        SyncWorkerSetup.enqueueBackgroundSync<AuthorizedTodoSynWorker>(applicationContext)
     }
 
 
