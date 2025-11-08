@@ -7,11 +7,11 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun VkLoginButton(
-    vm: VkAuthViewModel,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     text: String = "Войти через VK ID"
 ) {
-    Button(onClick = vm::signIn, modifier = modifier) {
+    Button(onClick = onClick, modifier = modifier) {
         Text(text)
     }
 }
