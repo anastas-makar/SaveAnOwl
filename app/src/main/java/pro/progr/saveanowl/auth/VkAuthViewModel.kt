@@ -9,29 +9,42 @@ import com.vk.id.auth.VKIDAuthCallback
 import com.vk.id.auth.VKIDAuthParams
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import pro.progr.diamondapi.AuthInterface
 
 class VkAuthViewModel(
     private val auth: AuthInterface,
-    private val api: AuthApi // твой Retrofit
+    private val api: AuthApi
 ) : ViewModel() {
 
-    private val _ui = MutableStateFlow<AuthUiState>(AuthUiState.LoggedOut)
-    val ui = _ui.asStateFlow()
+    private val signingIn = MutableStateFlow(false)
+    private val errorMsg  = MutableStateFlow<String?>(null)
 
-    init {
-        // при старте подтягиваем текущее состояние из хранилища
-        viewModelScope.launch {
-            auth.isAuthorized().collect { ok ->
-                _ui.value = if (ok) AuthUiState.LoggedIn(auth.getName()) else AuthUiState.LoggedOut
-            }
+    // Единственный источник правды: строим UI из auth.isAuthorized()
+    val ui: StateFlow<AuthUiState> = combine(
+        auth.isAuthorized().distinctUntilChanged(),
+        signingIn,
+        errorMsg
+    ) { authorized, signing, err ->
+        when {
+            err != null     -> AuthUiState.Error(err)
+            signing         -> AuthUiState.Loading
+            authorized      -> AuthUiState.LoggedIn(auth.getName())
+            else            -> AuthUiState.LoggedOut
         }
-    }
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, AuthUiState.Loading)
 
     fun signIn() {
-        _ui.value = AuthUiState.Loading
+        // если уже авторизован — ничего не делаем
+        if (auth.getSessionId() != null) return
+
+        errorMsg.value = null
+        signingIn.value = true
 
         viewModelScope.launch(Dispatchers.Default) {
             VKID.instance.authorize(
@@ -39,35 +52,33 @@ class VkAuthViewModel(
                     override fun onAuth(accessToken: AccessToken) {
                         viewModelScope.launch(Dispatchers.IO) {
                             runCatching {
-                                val deviceId = auth.getDeviceId() // уже из Auth
-                                val resp = api.signIn(AuthVkRequest(
-                                    vkAccessToken = accessToken.token,
-                                    deviceId = deviceId
-                                ))
+                                val resp = api.signIn(
+                                    AuthVkRequest(
+                                        vkAccessToken = accessToken.token,
+                                        deviceId = auth.getDeviceId()
+                                    )
+                                )
                                 if (!resp.isSuccessful) error("HTTP ${resp.code()} ${resp.message()}")
                                 resp.body() ?: error("Empty body")
                             }.onSuccess { body ->
-                                // 1) Сохраняем в безопасное хранилище
+                                // сохраняем только через Auth — UI сам обновится из потока
                                 auth.setSessionId(body.sessionId)
                                 auth.setSessionSecret(body.sessionSecret)
                                 auth.setName(body.name)
-
-                                // 2) Обновляем UI
-                                _ui.value = AuthUiState.LoggedIn(body.name)
-
+                                errorMsg.value = null
                             }.onFailure { e ->
-                                _ui.value = AuthUiState.Error(e.message ?: "Auth failed")
+                                errorMsg.value = e.message ?: "Auth failed"
+                            }.also {
+                                signingIn.value = false
                             }
                         }
                     }
-
                     override fun onFail(fail: VKIDAuthFail) {
-                        _ui.value = AuthUiState.Error(
-                            when (fail) {
-                                is VKIDAuthFail.Canceled -> "Отменено"
-                                else -> fail.description
-                            }
-                        )
+                        errorMsg.value = when (fail) {
+                            is VKIDAuthFail.Canceled -> "Отменено"
+                            else -> fail.description
+                        }
+                        signingIn.value = false
                     }
                 },
                 params = VKIDAuthParams { }
@@ -75,10 +86,8 @@ class VkAuthViewModel(
         }
     }
 
-    fun logout() {
-        viewModelScope.launch(Dispatchers.IO) {
-            auth.clearSession() // добавь в AuthInterface
-            _ui.value = AuthUiState.LoggedOut
-        }
+    fun logout() = viewModelScope.launch(Dispatchers.IO) {
+        auth.clearSession()
+        errorMsg.value = null
     }
 }
