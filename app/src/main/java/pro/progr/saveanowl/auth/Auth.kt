@@ -9,11 +9,21 @@ class Auth(context: Context) : AuthInterface {
     init {
         DeviceIdProvider.init(context)
     }
+
+    override fun clearSession() {
+        TODO("Not yet implemented")
+    }
+
     override fun getDeviceId(): String {
         return DeviceIdProvider.get()
     }
 
-    override fun <T> getHash(content: T): String {
+    override fun getHash(
+        sessionId: String,
+        deviceId: String,
+        nonce: String,
+        bodyBytes: ByteArray
+    ): String {
         TODO("Not yet implemented")
     }
 
@@ -21,11 +31,31 @@ class Auth(context: Context) : AuthInterface {
         TODO("Not yet implemented")
     }
 
+    override fun getNonce(): String {
+        TODO("Not yet implemented")
+    }
+
     override fun getSessionId(): String? {
         return "test" //todo:
     }
 
+    override fun getSessionSecret(): String? {
+        TODO("Not yet implemented")
+    }
+
     override fun isAuthorized(): Flow<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override fun setName(name: String?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setSessionId(sessionId: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setSessionSecret(sessionSecret: String) {
         TODO("Not yet implemented")
     }
 }
