@@ -111,10 +111,12 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-process:2.8.4")
 
+    implementation("com.google.crypto.tink:tink-android:1.13.0")
+
     implementation("pro.progr:flow:0.1.0-alpha")
     implementation("pro.progr:owlgame:0.0.1-alpha")
     implementation("pro.progr:fallingdiamonds:1.0.0-alpha")
-    implementation("pro.progr:diamond-api:1.0.3-alpha")
+    implementation("pro.progr:diamond-api:1.0.4-alpha")
     implementation("pro.progr:todos:0.0.1-alpha")
     implementation("pro.progr:diamondtimer:1.0.0-alpha")
 
