@@ -9,6 +9,8 @@ import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 import android.util.Base64
 import pro.progr.diamondapi.AuthInterface
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 class Auth(context: Context) : AuthInterface {
     private val rnd = SecureRandom()
@@ -20,8 +22,15 @@ class Auth(context: Context) : AuthInterface {
     init { DeviceIdProvider.init(context.applicationContext) }
 
     override fun getDeviceId(): String = DeviceIdProvider.get()
+    override fun getEpochSecond(): Long {
+        return LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
+    }
 
     override fun getSessionId(): String? = store.getSessionId()
+
+    override fun getSignAlg(): String {
+        return "hmac-sha256-v1"
+    }
 
     override fun setSessionId(sessionId: String) {
         store.putSessionId(sessionId)
@@ -49,6 +58,9 @@ class Auth(context: Context) : AuthInterface {
         sessionId: String,
         deviceId: String,
         nonce: String,
+        method: String,
+        pathQuery: String,
+        epochSecond: Long,
         bodyBytes: ByteArray
     ): String {
         val secretRaw = store.getSessionSecretRaw()
@@ -59,6 +71,9 @@ class Auth(context: Context) : AuthInterface {
             append("sid=").append(sessionId).append('\n')
             append("did=").append(deviceId).append('\n')
             append("nonce=").append(nonce).append('\n')
+            append("pqu=").append(pathQuery).append('\n')
+            append("m=").append(method).append('\n')
+            append("s=").append(epochSecond).append('\n')
         }.toByteArray(Charsets.US_ASCII)
         val toSign = canonical + bodySha
 
