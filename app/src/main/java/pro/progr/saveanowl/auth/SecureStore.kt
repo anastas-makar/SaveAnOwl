@@ -8,6 +8,12 @@ import com.google.crypto.tink.aead.AeadConfig
 import com.google.crypto.tink.integration.android.AndroidKeysetManager
 import com.google.crypto.tink.KeyTemplates
 
+private const val SESSION_ID = "sid"
+
+private const val SESSION_SECRET = "sec_enc"
+
+private const val USER_NAME = "name"
+
 class SecureStore(ctx: Context) {
     private val app = ctx.applicationContext
     private val prefs: SharedPreferences =
@@ -34,26 +40,32 @@ class SecureStore(ctx: Context) {
 
     fun putSessionId(sessionId: String?) {
         prefs.edit().apply {
-            if (sessionId == null) remove("sid") else putString("sid", sessionId)
+            if (sessionId == null) remove(SESSION_ID) else putString(SESSION_ID, sessionId)
         }.apply()
     }
-    fun getSessionId(): String? = prefs.getString("sid", null)
+    fun getSessionId(): String? = prefs.getString(SESSION_ID, null)
+
+    fun clearSession() = prefs.edit()
+        .remove(SESSION_ID)
+        .remove(SESSION_SECRET)
+        .remove(USER_NAME)
+        .apply()
 
     /** Шифруем sessionSecret (который пришёл от сервера, в base64url) и кладём в prefs */
     fun putSessionSecretB64u(secretB64u: String?) {
         prefs.edit().apply {
             if (secretB64u == null) {
-                remove("sec_enc")
+                remove(SESSION_SECRET)
             } else {
                 val ct = aead.encrypt(b64uDec(secretB64u), /*AD=*/"v1".toByteArray())
-                putString("sec_enc", b64u(ct))
+                putString(SESSION_SECRET, b64u(ct))
             }
         }.apply()
     }
 
     /** Достаём и расшифровываем sessionSecret как raw bytes; вернём null, если нет/ключ потерян */
     fun getSessionSecretRaw(): ByteArray? {
-        val enc = prefs.getString("sec_enc", null) ?: return null
+        val enc = prefs.getString(SESSION_SECRET, null) ?: return null
         return try {
             aead.decrypt(b64uDec(enc), /*AD=*/"v1".toByteArray())
         } catch (_: Throwable) {
@@ -63,10 +75,10 @@ class SecureStore(ctx: Context) {
 
     fun putDisplayName(name: String?) {
         prefs.edit().apply {
-            if (name == null) remove("name") else putString("name", name)
+            if (name == null) remove(USER_NAME) else putString(USER_NAME, name)
         }.apply()
     }
-    fun getDisplayName(): String? = prefs.getString("name", null)
+    fun getDisplayName(): String? = prefs.getString(USER_NAME, null)
 
     fun clearAll() {
         prefs.edit().clear().apply()

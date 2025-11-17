@@ -45,7 +45,7 @@ fun AppDrawer(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                val ctx = LocalContext.current.applicationContext as Application
+                val ctx = LocalContext.current.applicationContext as SaveAnOwlApplication
                 val vm: VkAuthViewModel = viewModel(factory = VkAuthViewModelFactory(ctx))
                 val state by vm.ui.collectAsState()
                 when (val s = state) {

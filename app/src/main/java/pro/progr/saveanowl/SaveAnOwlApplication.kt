@@ -14,7 +14,7 @@ import pro.progr.todos.work.SyncWorkerSetup
 
 class SaveAnOwlApplication : Application(), DefaultLifecycleObserver {
 
-    private val auth by lazy(LazyThreadSafetyMode.NONE) { Auth(applicationContext) }
+    val auth by lazy(LazyThreadSafetyMode.NONE) { Auth(applicationContext) }
 
     val appComponent: SaveAnOwlComponent by lazy {
         DaggerSaveAnOwlComponent.factory().create(applicationContext)

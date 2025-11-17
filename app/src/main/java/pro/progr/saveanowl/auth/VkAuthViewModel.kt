@@ -40,8 +40,8 @@ class VkAuthViewModel(
     }.stateIn(viewModelScope, SharingStarted.Eagerly, AuthUiState.Loading)
 
     fun signIn() {
-        // если уже авторизован — ничего не делаем
-        if (auth.getSessionId() != null) return
+        // если уже авторизован — чистим
+        if (auth.getSessionId() != null)  auth.clearSession()
 
         errorMsg.value = null
         signingIn.value = true
@@ -62,8 +62,8 @@ class VkAuthViewModel(
                                 resp.body() ?: error("Empty body")
                             }.onSuccess { body ->
                                 // сохраняем только через Auth — UI сам обновится из потока
-                                auth.setSessionId(body.sessionId)
-                                auth.setSessionSecret(body.sessionSecret)
+                                auth.setSession(sessionId = body.sessionId,
+                                    sessionSecret = body.sessionSecret)
                                 auth.setName(body.name)
                                 errorMsg.value = null
                             }.onFailure { e ->

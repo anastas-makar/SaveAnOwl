@@ -8,6 +8,7 @@ import java.security.SecureRandom
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 import android.util.Base64
+import android.util.Log
 import pro.progr.diamondapi.AuthInterface
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -32,17 +33,14 @@ class Auth(context: Context) : AuthInterface {
         return "hmac-sha256-v1"
     }
 
-    override fun setSessionId(sessionId: String) {
+    override fun setSession(sessionId: String, sessionSecret: String) {
         store.putSessionId(sessionId)
+        store.putSessionSecretB64u(sessionSecret) // хранится шифр-текст
         _authorized.value = true
     }
 
-    override fun setSessionSecret(sessionSecret: String) {
-        store.putSessionSecretB64u(sessionSecret) // хранится шифр-текст
-    }
-
     override fun clearSession() {
-        store.clearAll()
+        store.clearSession()
         _authorized.value = false
     }
 
@@ -63,24 +61,30 @@ class Auth(context: Context) : AuthInterface {
         epochSecond: Long,
         bodyBytes: ByteArray
     ): String {
-        val secretRaw = store.getSessionSecretRaw()
-            ?: error("No sessionSecret") // обработай выше как разлогин
+        val secretRaw = store.getSessionSecretRaw() ?: error("No sessionSecret")
 
         val bodySha = MessageDigest.getInstance("SHA-256").digest(bodyBytes)
+        val bh = Base64.encodeToString(
+            bodySha,
+            Base64.URL_SAFE or Base64.NO_WRAP or Base64.NO_PADDING
+        )
+
         val canonical = buildString {
             append("sid=").append(sessionId).append('\n')
             append("did=").append(deviceId).append('\n')
             append("nonce=").append(nonce).append('\n')
+            append("s=").append(epochSecond).append('\n')
             append("pqu=").append(pathQuery).append('\n')
             append("m=").append(method).append('\n')
-            append("s=").append(epochSecond).append('\n')
-        }.toByteArray(Charsets.US_ASCII)
-        val toSign = canonical + bodySha
+            append("bh=").append(bh) // без завершающего \n
+        }
+
+        Log.wtf("canonical", canonical)
 
         val mac = Mac.getInstance("HmacSHA256").apply {
             init(SecretKeySpec(secretRaw, "HmacSHA256"))
         }
-        val sig = mac.doFinal(toSign)
+        val sig = mac.doFinal(canonical.toByteArray(Charsets.US_ASCII))
         return Base64.encodeToString(sig, Base64.URL_SAFE or Base64.NO_WRAP or Base64.NO_PADDING)
     }
 }
