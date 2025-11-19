@@ -1,6 +1,5 @@
 package pro.progr.saveanowl
 
-import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,7 +28,7 @@ import pro.progr.saveanowl.auth.AuthUiState
 import pro.progr.saveanowl.auth.VkAuthViewModel
 import pro.progr.saveanowl.auth.VkAuthViewModelFactory
 import pro.progr.saveanowl.auth.VkLoginButton
-import pro.progr.saveanowl.auth.VkWelcomeText
+import pro.progr.saveanowl.auth.VkWelcomeRow
 
 @Composable
 fun AppDrawer(
@@ -45,14 +44,15 @@ fun AppDrawer(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                val ctx = LocalContext.current.applicationContext as SaveAnOwlApplication
-                val vm: VkAuthViewModel = viewModel(factory = VkAuthViewModelFactory(ctx))
+                val app = LocalContext.current.applicationContext as SaveAnOwlApplication
+                val vm: VkAuthViewModel = viewModel(factory = VkAuthViewModelFactory(app))
                 val state by vm.ui.collectAsState()
+
                 when (val s = state) {
                     is AuthUiState.LoggedOut -> VkLoginButton(onClick = vm::signIn, modifier = Modifier.padding(16.dp))
-                    is AuthUiState.Loading   -> CircularProgressIndicator()
-                    is AuthUiState.LoggedIn  -> VkWelcomeText(name = s.name.toString())
-                    is AuthUiState.Error     -> Text("Ошибка: ${s.message}")
+                    is AuthUiState.Loading   -> CircularProgressIndicator(Modifier.padding(16.dp))
+                    is AuthUiState.LoggedIn  -> VkWelcomeRow(name = s.name, onLogout = vm::logout)
+                    is AuthUiState.Error     -> Text("Ошибка: ${s.message}", modifier = Modifier.padding(16.dp))
                 }
 
                 // Две колонки сверху

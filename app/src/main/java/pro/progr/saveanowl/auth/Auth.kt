@@ -8,7 +8,6 @@ import java.security.SecureRandom
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 import android.util.Base64
-import android.util.Log
 import pro.progr.diamondapi.AuthInterface
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -78,8 +77,6 @@ class Auth(context: Context) : AuthInterface {
             append("m=").append(method).append('\n')
             append("bh=").append(bh) // без завершающего \n
         }
-
-        Log.wtf("canonical", canonical)
 
         val mac = Mac.getInstance("HmacSHA256").apply {
             init(SecretKeySpec(secretRaw, "HmacSHA256"))
