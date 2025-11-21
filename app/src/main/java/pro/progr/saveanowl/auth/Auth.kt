@@ -8,7 +8,7 @@ import java.security.SecureRandom
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 import android.util.Base64
-import pro.progr.diamondapi.AuthInterface
+import pro.progr.authapi.AuthInterface
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 

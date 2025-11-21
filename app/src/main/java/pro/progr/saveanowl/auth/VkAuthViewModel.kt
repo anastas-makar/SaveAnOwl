@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import pro.progr.diamondapi.AuthInterface
+import pro.progr.authapi.AuthInterface
 
 class VkAuthViewModel(
     private val auth: AuthInterface,

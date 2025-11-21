@@ -116,7 +116,8 @@ dependencies {
     implementation("pro.progr:flow:0.1.0-alpha")
     implementation("pro.progr:owlgame:0.0.1-alpha")
     implementation("pro.progr:fallingdiamonds:1.0.0-alpha")
-    implementation("pro.progr:diamond-api:2.0.0-alpha")
+    implementation("pro.progr:diamond-api:3.0.0-alpha")
+    implementation("pro.progr:auth-api:0.0.3-alpha")
     implementation("pro.progr:todos:0.0.1-alpha")
     implementation("pro.progr:diamondtimer:1.0.0-alpha")
 

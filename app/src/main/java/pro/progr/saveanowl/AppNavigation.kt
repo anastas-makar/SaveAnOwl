@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import pro.progr.diamondapi.AuthInterface
+import pro.progr.authapi.AuthInterface
 import pro.progr.diamondtimer.TimerScreen
 import pro.progr.diamondtimer.TimerViewModel
 import pro.progr.diamondtimer.TimerViewModelFactory
