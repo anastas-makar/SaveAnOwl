@@ -6,6 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import pro.progr.owlgame.worker.GameWorkerSetup
 import pro.progr.saveanowl.auth.Auth
+import pro.progr.saveanowl.auth.AuthApiProvider
 import pro.progr.saveanowl.worker.AuthorizedTodoSynWorker
 import pro.progr.todos.dagger2.AppModule
 import pro.progr.todos.dagger2.DaggerTodosComponent
@@ -14,7 +15,11 @@ import pro.progr.todos.work.SyncWorkerSetup
 
 class SaveAnOwlApplication : Application(), DefaultLifecycleObserver {
 
-    val auth by lazy(LazyThreadSafetyMode.NONE) { Auth(applicationContext) }
+    // один-единственный auth на всё приложение
+    val auth by lazy(LazyThreadSafetyMode.NONE) { Auth(this) }
+
+    // и один-единственный API-клиент, собранный с этим auth
+    val authApi by lazy(LazyThreadSafetyMode.NONE) { AuthApiProvider.api(auth) }
 
     val appComponent: SaveAnOwlComponent by lazy {
         DaggerSaveAnOwlComponent.factory().create(applicationContext)

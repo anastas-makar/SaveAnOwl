@@ -9,8 +9,9 @@ class VkAuthViewModelFactory(
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        val auth = app.auth          // твоя реализация AuthInterface
-        val api  = AuthApiProvider.api                   // как у тебя сейчас
-        return VkAuthViewModel(auth, api) as T
+        return VkAuthViewModel(
+            auth = app.auth,
+            api  = app.authApi   // <-- теперь берём готовый клиент
+        ) as T
     }
 }

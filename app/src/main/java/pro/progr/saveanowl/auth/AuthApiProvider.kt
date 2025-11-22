@@ -3,30 +3,36 @@ package pro.progr.saveanowl.auth
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import pro.progr.authapi.AuthInterface
+import pro.progr.authapi.UnauthorizedInterceptor
+import pro.progr.authapi.signingInterceptor
 import pro.progr.saveanowl.BuildConfig
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object AuthApiProvider {
-    private val client: OkHttpClient by lazy {
-        val b = OkHttpClient.Builder()
+    fun api(auth: AuthInterface): AuthApi {
+        val http = OkHttpClient.Builder()
             .connectTimeout(5, TimeUnit.SECONDS)
             .readTimeout(15, TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS)
-        if (BuildConfig.DEBUG) {
-            b.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-        }
-        b.build()
-    }
+            // порядок важен: сначала подпишем, потом логгинг, потом реакция на 401
+            .addInterceptor(signingInterceptor(auth))
+            .apply {
+                if (BuildConfig.DEBUG) {
+                    addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                }
+            }
+            .addInterceptor(UnauthorizedInterceptor(auth)) // на 401/403 локально вычистит сессию
+            .build()
 
-    private val retrofit: Retrofit by lazy {
-        Retrofit.Builder()
-            .baseUrl(BuildConfig.API_BASE_URL) // должен оканчиваться на /
-            .client(client)
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BuildConfig.API_BASE_URL) // оканчивается на /
+            .client(http)
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .build()
-    }
 
-    val api: AuthApi by lazy { retrofit.create(AuthApi::class.java) }
+        return retrofit.create(AuthApi::class.java)
+    }
 }
