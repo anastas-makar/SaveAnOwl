@@ -5,8 +5,8 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import pro.progr.owlgame.worker.GameWorkerSetup
-import pro.progr.saveanowl.auth.Auth
-import pro.progr.saveanowl.auth.AuthApiProvider
+import pro.progr.authvk.Auth
+import pro.progr.authvk.AuthApiProvider
 import pro.progr.saveanowl.worker.AuthorizedTodoSynWorker
 import pro.progr.todos.dagger2.AppModule
 import pro.progr.todos.dagger2.DaggerTodosComponent

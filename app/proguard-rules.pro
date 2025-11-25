@@ -108,6 +108,12 @@
 # todos *
 -keep class pro.progr.todos.** { *; }
 
+#authvk
+-keep class pro.progr.authvk.** { *; }
+
+# полезно для обобщённых типов
+-keepattributes Signature
+
 # vk
 -keep class com.vk.id.** { *; }
 -keep class com.vk.api.** { *; }      # VK API обёртки

@@ -3,7 +3,7 @@ package pro.progr.saveanowl.worker
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import pro.progr.saveanowl.auth.Auth
+import pro.progr.authvk.Auth
 import pro.progr.todos.work.doTodoSyncWork
 
 class AuthorizedTodoSynWorker(
