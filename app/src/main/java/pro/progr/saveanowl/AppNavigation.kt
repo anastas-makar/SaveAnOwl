@@ -59,7 +59,7 @@ fun AppNavigation(diamondsCountRepository: DiamondsCountRepository,
                 onResume = vm::resume,
                 onReset = vm::reset,
                 onRestart = vm::restart,
-                onClaim = vm::claim,
+                onClaim = vm::claimAndFlush,
                 onClaimAndRestart = vm::claimAndRestart,
                 onChangeDurationMinutes = vm::setDurationMinutes,
                 onChangeReward = vm::setReward
