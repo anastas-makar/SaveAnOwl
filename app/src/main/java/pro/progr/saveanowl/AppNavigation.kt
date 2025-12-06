@@ -52,17 +52,8 @@ fun AppNavigation(diamondsCountRepository: DiamondsCountRepository,
             )
 
             TimerScreen(
-                state = vm.state,
-                diamondsCount = vm.diamondsCount,
-                onStart = vm::start,
-                onPause = vm::pause,
-                onResume = vm::resume,
-                onReset = vm::reset,
-                onRestart = vm::restart,
-                onClaim = vm::claimAndFlush,
-                onClaimAndRestart = vm::claimAndRestart,
-                onChangeDurationMinutes = vm::setDurationMinutes,
-                onChangeReward = vm::setReward
+                backFun = {navController.popBackStack()},
+                vm = vm
             )
         }
 
