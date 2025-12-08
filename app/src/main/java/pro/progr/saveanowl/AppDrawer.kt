@@ -36,6 +36,9 @@ fun AppDrawer(
     navController: NavHostController,
     content: @Composable () -> Unit
 ) {
+    val isAuthorized = (LocalContext.current.applicationContext as SaveAnOwlApplication)
+        .auth.isAuthorized().collectAsState(false)
+
     ModalDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -88,8 +91,11 @@ fun AppDrawer(
 
                 }
 
-                // Остальной контент дровера
-                WidgetScreen(navController)
+                if (isAuthorized.value) {
+                    WidgetScreen(navController)
+                } else {
+                    NotAuthorizedScreen()
+                }
             }
         },
         content = content
