@@ -60,13 +60,15 @@ fun AppNavigation(diamondsCountRepository: DiamondsCountRepository,
         //Навигация в модуле "Спаси сову"
         composable("owl_navigation") {
             OwlNavigation (diamondDao = diamondsCountRepository,
-                backToMain = { navController.popBackStack()})
+                backToMain = { navController.popBackStack()},
+                auth = auth)
         }
 
         //Навигация в модуле "Спаси сову"
         composable("owl_navigation/pouch") {
             OwlNavigation(startDestination = "pouch", diamondDao = diamondsCountRepository,
-                backToMain = { navController.popBackStack() })
+                backToMain = { navController.popBackStack() },
+                auth = auth)
         }
 
         //Навигация в модуле "Спаси сову"
@@ -81,7 +83,8 @@ fun AppNavigation(diamondsCountRepository: DiamondsCountRepository,
             val id = backStackEntry.arguments?.getString("id")
 
             OwlNavigation(startDestination = "animal_searching/$id", diamondDao = diamondsCountRepository,
-                backToMain = { navController.navigate("todos") })
+                backToMain = { navController.navigate("todos") },
+                auth = auth)
 
         }
 

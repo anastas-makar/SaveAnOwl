@@ -7,6 +7,7 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import pro.progr.owlgame.worker.GameWorkerSetup
 import pro.progr.authvk.Auth
 import pro.progr.authvk.AuthApiProvider
+import pro.progr.saveanowl.worker.AuthorizedOwlWorker
 import pro.progr.saveanowl.worker.AuthorizedTodoSynWorker
 import pro.progr.todos.dagger2.AppModule
 import pro.progr.todos.dagger2.DaggerTodosComponent
@@ -37,8 +38,7 @@ class SaveAnOwlApplication : Application(), DefaultLifecycleObserver {
         super<Application>.onCreate()
 
         appComponent.inject(this)
-        GameWorkerSetup.scheduleWork(baseContext)
-
+        GameWorkerSetup.enqueueBackgroundSync<AuthorizedOwlWorker>(applicationContext)
         // Подписываемся на жизненный цикл процесса, чтобы отловить уход в фон
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
     }
