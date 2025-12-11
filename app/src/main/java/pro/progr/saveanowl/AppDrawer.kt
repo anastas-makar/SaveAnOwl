@@ -41,6 +41,8 @@ fun AppDrawer(
     val app = LocalContext.current.applicationContext as SaveAnOwlApplication
     val isAuthorized = app
         .auth.isAuthorized().collectAsState(false)
+    val diamondsTotalState = diamondViewModel.getDiamondsCount()
+        .collectAsState(initial = 0)
 
     ModalDrawer(
         drawerState = drawerState,
@@ -74,8 +76,7 @@ fun AppDrawer(
                             .weight(1f)
                     ) {
                         SundukDrawerWidget(
-                            diamondsTotal = diamondViewModel.getDiamondsCount()
-                                .collectAsState(initial = 0),
+                            diamondsTotal = diamondsTotalState,
                             { navController.navigate("sunduk") }
                         )
                     }
@@ -86,8 +87,7 @@ fun AppDrawer(
                             .weight(1f)
                     ) {
                         TimerDrawerWidget(
-                            diamondsTotal = diamondViewModel.getDiamondsCount()
-                                .collectAsState(initial = 0),
+                            diamondsTotal = diamondsTotalState,
                             { navController.navigate("timer") }
                         )
                     }
