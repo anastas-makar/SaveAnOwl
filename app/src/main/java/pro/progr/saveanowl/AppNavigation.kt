@@ -1,13 +1,13 @@
 package pro.progr.saveanowl
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import pro.progr.authapi.AuthInterface
 import pro.progr.diamondtimer.TimerScreen
 import pro.progr.diamondtimer.TimerViewModel
 import pro.progr.diamondtimer.TimerViewModelFactory
@@ -22,11 +22,12 @@ import pro.progr.todos.dagger2.DaggerViewModelFactory
 @Composable
 fun AppNavigation(diamondsCountRepository: DiamondsCountRepository,
                   todosDaggerVmFactory: DaggerViewModelFactory,
-                  auth: AuthInterface,
                   startDestination: String = "todos"
 ) {
     val navController = rememberNavController()
     val diamondViewModel : DiamondViewModel = viewModel(factory = todosDaggerVmFactory)
+
+    val app = LocalContext.current.applicationContext as SaveAnOwlApplication
 
     NavHost(navController = navController, startDestination = startDestination) {
         composable("todos") {
@@ -34,7 +35,7 @@ fun AppNavigation(diamondsCountRepository: DiamondsCountRepository,
                 appDrawer = { a, b, c, d -> AppDrawer(a, b, c, d) },
                 externalNavController = navController,
                 diamondViewModel = diamondViewModel,
-                auth = auth
+                component = app.todosComponent
             )
         }
 
@@ -61,14 +62,14 @@ fun AppNavigation(diamondsCountRepository: DiamondsCountRepository,
         composable("owl_navigation") {
             OwlNavigation (diamondDao = diamondsCountRepository,
                 backToMain = { navController.popBackStack()},
-                auth = auth)
+                component = app.owlGameComponent)
         }
 
         //Навигация в модуле "Спаси сову"
         composable("owl_navigation/pouch") {
             OwlNavigation(startDestination = "pouch", diamondDao = diamondsCountRepository,
                 backToMain = { navController.popBackStack() },
-                auth = auth)
+                component = app.owlGameComponent)
         }
 
         //Навигация в модуле "Спаси сову"
@@ -84,7 +85,7 @@ fun AppNavigation(diamondsCountRepository: DiamondsCountRepository,
 
             OwlNavigation(startDestination = "animal_searching/$id", diamondDao = diamondsCountRepository,
                 backToMain = { navController.navigate("todos") },
-                auth = auth)
+                component = app.owlGameComponent)
 
         }
 

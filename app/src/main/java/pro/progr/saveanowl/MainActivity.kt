@@ -56,7 +56,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             AppNavigation(diamondsCountRepository = diamondsCountRepository,
                 todosDaggerVmFactory = todosDaggerVmFactory,
-                auth = app.auth,
                 startDestination =
                 if (animalId != null)
                     "animal?id=${Uri.encode(animalId)}"
