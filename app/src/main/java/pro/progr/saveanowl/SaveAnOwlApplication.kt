@@ -7,6 +7,9 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import pro.progr.owlgame.worker.GameWorkerSetup
 import pro.progr.authvk.Auth
 import pro.progr.authvk.AuthApiProvider
+import pro.progr.owlgame.dagger.OwlGameModule
+import pro.progr.owlgame.dagger.DaggerOwlGameComponent
+import pro.progr.owlgame.dagger.OwlGameComponent
 import pro.progr.saveanowl.worker.AuthorizedOwlWorker
 import pro.progr.saveanowl.worker.AuthorizedTodoSynWorker
 import pro.progr.todos.dagger2.AppModule
@@ -31,6 +34,14 @@ class SaveAnOwlApplication : Application(), DefaultLifecycleObserver {
             .application(this)                       // @BindsInstance
             .auth(auth)
             .appModule(AppModule(this))
+            .build()
+    }
+
+    val owlGameComponent: OwlGameComponent by lazy {
+        DaggerOwlGameComponent.builder()
+            .application(this)
+            .appModule(OwlGameModule(this))
+            .auth(auth)
             .build()
     }
 

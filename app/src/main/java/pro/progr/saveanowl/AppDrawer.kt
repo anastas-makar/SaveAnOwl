@@ -1,6 +1,5 @@
 package pro.progr.saveanowl
 
-import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,16 +20,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import pro.progr.diamondapi.GetDiamondsCountInterface
-import pro.progr.fallingdiamonds.composable.SundukDrawerWidget
-import pro.progr.diamondtimer.TimerDrawerWidget
-import pro.progr.owlgame.presentation.ui.WidgetScreen
 import pro.progr.authvk.AuthUiState
 import pro.progr.authvk.VkAuthViewModel
 import pro.progr.authvk.VkLoginButton
 import pro.progr.authvk.VkWelcomeRow
-import pro.progr.owlgame.dagger.AppModule
-import pro.progr.owlgame.dagger.DaggerAppComponent
+import pro.progr.diamondapi.GetDiamondsCountInterface
+import pro.progr.diamondtimer.TimerDrawerWidget
+import pro.progr.fallingdiamonds.composable.SundukDrawerWidget
+import pro.progr.owlgame.presentation.ui.WidgetScreen
 import pro.progr.owlgame.presentation.viewmodel.WidgetViewModel
 import pro.progr.owlgame.presentation.viewmodel.dagger.DaggerWidgetViewModel
 
@@ -41,7 +38,8 @@ fun AppDrawer(
     navController: NavHostController,
     content: @Composable () -> Unit
 ) {
-    val isAuthorized = (LocalContext.current.applicationContext as SaveAnOwlApplication)
+    val app = LocalContext.current.applicationContext as SaveAnOwlApplication
+    val isAuthorized = app
         .auth.isAuthorized().collectAsState(false)
 
     ModalDrawer(
@@ -97,18 +95,8 @@ fun AppDrawer(
                 }
 
                 if (isAuthorized.value) {
-                    val application = LocalContext.current.applicationContext as Application
-                    val component = DaggerAppComponent.builder()
-                        .application(application)
-                        .appModule(AppModule(application))
-                        .auth(
-                            (LocalContext.current.applicationContext as SaveAnOwlApplication)
-                                .auth
-                        )
-                        .build()
-
                     WidgetScreen(navController,
-                        DaggerWidgetViewModel<WidgetViewModel>(component))
+                        DaggerWidgetViewModel<WidgetViewModel>(app.owlGameComponent))
                 } else {
                     NotAuthorizedScreen()
                 }
