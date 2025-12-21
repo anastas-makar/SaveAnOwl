@@ -21,7 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import pro.progr.authvk.AuthUiState
+import pro.progr.authvk.NotAuthorizedScreen
 import pro.progr.authvk.VkAuthViewModel
+import pro.progr.authvk.VkAuthViewModelFactory
 import pro.progr.authvk.VkLoginButton
 import pro.progr.authvk.VkWelcomeRow
 import pro.progr.diamondapi.GetDiamondsCountInterface
@@ -52,7 +54,11 @@ fun AppDrawer(
                     .fillMaxSize()
             ) {
                 val app = LocalContext.current.applicationContext as SaveAnOwlApplication
-                val vm: VkAuthViewModel = viewModel(factory = VkAuthViewModelFactory(app))
+                val vm: VkAuthViewModel = viewModel(factory = VkAuthViewModelFactory(
+                    app.auth,
+                    app.authApi
+                )
+                )
                 val state by vm.ui.collectAsState()
 
                 when (val s = state) {
@@ -98,7 +104,7 @@ fun AppDrawer(
                     WidgetScreen(navController,
                         DaggerWidgetViewModel<WidgetViewModel>(app.owlGameComponent))
                 } else {
-                    NotAuthorizedScreen()
+                    NotAuthorizedScreen("Войдите через VK ID, чтобы играть")
                 }
             }
         },

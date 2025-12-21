@@ -24,7 +24,7 @@ dependencyResolutionManagement {
             url = uri("file:C:/Users/KNS/AndroidStudioProjects/DiamondTimer/app/build/repo")
         }
         maven {
-            url = uri("file:C:/Users/KNS/AndroidStudioProjects/OwlGame/app/build/repo")
+            url = uri("file:C:/Users/KNS/StudioProjects/OwlGame/app/build/repo")
         }
         maven {
             url = uri("file:C:/Users/KNS/AndroidStudioProjects/Todos/app/build/repo")
