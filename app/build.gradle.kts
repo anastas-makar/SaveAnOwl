@@ -133,5 +133,5 @@ dependencies {
     implementation("pro.progr:auth-api:0.0.3-alpha")
     implementation("pro.progr:todos:0.0.1-alpha")
     implementation("pro.progr:diamondtimer:1.0.0-alpha")
-    implementation("pro.progr:auth-vk:1.0.1-alpha")
+    implementation("pro.progr:auth-vk:1.0.4-alpha")
 }
