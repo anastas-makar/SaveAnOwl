@@ -32,7 +32,13 @@ fun AppNavigation(diamondsCountRepository: DiamondsCountRepository,
     NavHost(navController = navController, startDestination = startDestination) {
         composable("todos") {
             TodosNavigation(
-                appDrawer = { a, b, c, d -> AppDrawer(a, b, c, d) },
+                appDrawer = { drawerState,
+                              diamondViewModel,
+                              navController,
+                              content -> AppDrawer(drawerState,
+                                                    diamondViewModel,
+                                                    navController,
+                                                    content) },
                 externalNavController = navController,
                 diamondViewModel = diamondViewModel,
                 component = app.todosComponent
