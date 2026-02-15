@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.vk.id.VKID
 import pro.progr.owlgame.worker.GameWorkerSetup
 import pro.progr.authvk.Auth
 import pro.progr.authvk.AuthApiProvider
@@ -47,6 +48,8 @@ class SaveAnOwlApplication : Application(), DefaultLifecycleObserver {
 
     override fun onCreate() {
         super<Application>.onCreate()
+
+        VKID.init(this)
 
         appComponent.inject(this)
         GameWorkerSetup.enqueueBackgroundSync<AuthorizedOwlWorker>(applicationContext)
