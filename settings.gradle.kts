@@ -21,13 +21,13 @@ dependencyResolutionManagement {
             url = uri("file:C:/Users/KNS/StudioProjects/FallingDiamonds/app/build/repo")
         }
         maven {
-            url = uri("file:C:/Users/KNS/AndroidStudioProjects/DiamondTimer/app/build/repo")
+            url = uri("file:C:/Users/KNS/StudioProjects/DiamondTimer/app/build/repo")
         }
         maven {
             url = uri("file:C:/Users/KNS/StudioProjects/OwlGame/app/build/repo")
         }
         maven {
-            url = uri("file:C:/Users/KNS/AndroidStudioProjects/Todos/app/build/repo")
+            url = uri("file:C:/Users/KNS/StudioProjects/Todos/app/build/repo")
         }
         maven {
             url = uri("https://maven.pkg.github.com/anastas-makar/DiamondApi")

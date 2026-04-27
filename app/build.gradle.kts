@@ -74,6 +74,13 @@ android {
     namespace = "pro.progr.saveanowl"
 }
 
+configurations.all {
+    resolutionStrategy.dependencySubstitution {
+        substitute(module("com.vk.id:tracking-tracer"))
+            .using(module("com.vk.id:tracking-noop:2.5.1"))
+    }
+}
+
 dependencies {
     implementation("androidx.core:core-ktx:1.17.0")
     implementation("androidx.appcompat:appcompat:1.7.1")
