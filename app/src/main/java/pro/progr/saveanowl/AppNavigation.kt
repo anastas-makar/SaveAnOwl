@@ -79,6 +79,13 @@ fun AppNavigation(diamondsCountRepository: DiamondsCountRepository,
         }
 
         //Навигация в модуле "Спаси сову"
+        composable("owl_navigation/inventory") {
+            OwlNavigation(startDestination = "inventory", diamondDao = diamondsCountRepository,
+                backToMain = { navController.popBackStack() },
+                component = app.owlGameComponent)
+        }
+
+        //Навигация в модуле "Спаси сову"
         composable(
             route = "animal?id={id}",
             arguments = listOf(navArgument("id") {
