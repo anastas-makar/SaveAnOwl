@@ -13,6 +13,7 @@ import pro.progr.diamondtimer.TimerViewModel
 import pro.progr.diamondtimer.TimerViewModelFactory
 import pro.progr.fallingdiamonds.composable.SundukScreen
 import pro.progr.owlgame.presentation.navigation.OwlNavigation
+import pro.progr.saveanowl.drawer.AppDrawer
 import pro.progr.todos.DiamondViewModel
 import pro.progr.todos.DiamondsCountRepository
 import pro.progr.todos.TodosNavigation
@@ -35,10 +36,14 @@ fun AppNavigation(diamondsCountRepository: DiamondsCountRepository,
                 appDrawer = { drawerState,
                               diamondViewModel,
                               navController,
-                              content -> AppDrawer(drawerState,
-                                                    diamondViewModel,
-                                                    navController,
-                                                    content) },
+                              content ->
+                    AppDrawer(
+                        drawerState,
+                        diamondViewModel,
+                        navController,
+                        content
+                    )
+                },
                 externalNavController = navController,
                 diamondViewModel = diamondViewModel,
                 component = app.todosComponent
