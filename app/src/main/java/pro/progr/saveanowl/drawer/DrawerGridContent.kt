@@ -3,7 +3,6 @@ package pro.progr.saveanowl.drawer
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,18 +14,17 @@ import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
-import pro.progr.authvk.AuthUiState
-import pro.progr.owlgame.presentation.viewmodel.WidgetViewModel
 import androidx.compose.runtime.State
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import pro.progr.authvk.AuthUiState
 import pro.progr.authvk.NotAuthorizedScreen
 import pro.progr.authvk.VkLoginButton
 import pro.progr.authvk.VkWelcomeRow
 import pro.progr.diamondtimer.TimerDrawerWidget
 import pro.progr.fallingdiamonds.composable.SundukDrawerWidget
+import pro.progr.owlgame.presentation.viewmodel.WidgetViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -81,31 +79,29 @@ fun DrawerGridContent(
             }
         }
 
-        item(
-            span = { GridItemSpan(maxLineSpan) }
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                verticalAlignment = Alignment.Top
-            ) {
-                Card(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    SundukDrawerWidget(
-                        diamondsTotal = diamondsTotalState,
-                        navFun = { navController.navigate("sunduk") }
-                    )
-                }
+        item {
 
-                Card(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    TimerDrawerWidget(
-                        diamondsTotal = diamondsTotalState,
-                        navFun = { navController.navigate("timer") }
-                    )
-                }
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp)
+            ) {
+                SundukDrawerWidget(
+                    diamondsTotal = diamondsTotalState,
+                    navFun = { navController.navigate("sunduk") }
+                )
+            }
+        }
+
+        item {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp)
+            ) {
+                TimerDrawerWidget(
+                    navFun = { navController.navigate("timer") }
+                )
             }
         }
 
