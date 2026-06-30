@@ -43,6 +43,7 @@ class SaveAnOwlApplication : Application(), DefaultLifecycleObserver {
             .application(this)
             .appModule(OwlGameModule(this))
             .auth(auth)
+            .purchaseInterface(todosComponent.purchaseInterface())
             .build()
     }
 

@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val app = application as SaveAnOwlApplication
         val diamondsCountRepository =
-            app.todosComponent.diamondsCountRepository()
+            app.todosComponent.purchaseInterface()
         val todosDaggerVmFactory = (application as SaveAnOwlApplication).todosComponent.daggerViewModelFactory()
 
         lifecycleScope.launch {

@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import pro.progr.diamondapi.PurchaseInterface
 import pro.progr.diamondtimer.TimerScreen
 import pro.progr.diamondtimer.TimerViewModel
 import pro.progr.diamondtimer.TimerViewModelFactory
@@ -15,13 +16,12 @@ import pro.progr.fallingdiamonds.composable.SundukScreen
 import pro.progr.owlgame.presentation.navigation.OwlNavigation
 import pro.progr.saveanowl.drawer.AppDrawer
 import pro.progr.todos.DiamondViewModel
-import pro.progr.todos.DiamondsCountRepository
 import pro.progr.todos.TodosNavigation
 import pro.progr.todos.dagger2.DaggerViewModelFactory
 
 @kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
-fun AppNavigation(diamondsCountRepository: DiamondsCountRepository,
+fun AppNavigation(diamondsCountRepository: PurchaseInterface,
                   todosDaggerVmFactory: DaggerViewModelFactory,
                   startDestination: String = "todos"
 ) {
@@ -79,6 +79,13 @@ fun AppNavigation(diamondsCountRepository: DiamondsCountRepository,
         //Навигация в модуле "Спаси сову"
         composable("owl_navigation/pouch") {
             OwlNavigation(startDestination = "pouch", diamondDao = diamondsCountRepository,
+                backToMain = { navController.popBackStack() },
+                component = app.owlGameComponent)
+        }
+
+        //Навигация в модуле "Спаси сову"
+        composable("owl_navigation/merchant") {
+            OwlNavigation(startDestination = "merchant", diamondDao = diamondsCountRepository,
                 backToMain = { navController.popBackStack() },
                 component = app.owlGameComponent)
         }
