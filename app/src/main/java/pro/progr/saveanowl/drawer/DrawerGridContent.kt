@@ -25,6 +25,7 @@ import pro.progr.authvk.VkWelcomeRow
 import pro.progr.diamondtimer.TimerDrawerWidget
 import pro.progr.fallingdiamonds.composable.SundukDrawerWidget
 import pro.progr.owlgame.presentation.viewmodel.WidgetViewModel
+import androidx.compose.foundation.layout.safeDrawingPadding
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -41,7 +42,9 @@ fun DrawerGridContent(
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .safeDrawingPadding(),
         contentPadding = PaddingValues(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
