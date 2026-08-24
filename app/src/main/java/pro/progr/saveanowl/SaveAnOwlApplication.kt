@@ -5,13 +5,18 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.vk.id.VKID
-import pro.progr.owlgame.worker.GameWorkerSetup
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import pro.progr.authvk.Auth
 import pro.progr.authvk.AuthApiProvider
-import pro.progr.owlgame.dagger.OwlGameModule
 import pro.progr.owlgame.dagger.DaggerOwlGameComponent
 import pro.progr.owlgame.dagger.OwlGameComponent
-import pro.progr.saveanowl.worker.AuthorizedOwlWorker
+import pro.progr.owlgame.dagger.OwlGameModule
+import pro.progr.owlgame.worker.GameWorkerSetup
+import pro.progr.saveanowl.worker.AuthorizedGameSyncWorker
 import pro.progr.saveanowl.worker.AuthorizedTodoSynWorker
 import pro.progr.todos.dagger2.AppModule
 import pro.progr.todos.dagger2.DaggerTodosComponent
@@ -20,10 +25,12 @@ import pro.progr.todos.work.SyncWorkerSetup
 
 class SaveAnOwlApplication : Application(), DefaultLifecycleObserver {
 
-    // один-единственный auth на всё приложение
+    private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+
+    // One auth instance for the whole application.
     val auth by lazy(LazyThreadSafetyMode.NONE) { Auth(this) }
 
-    // и один-единственный API-клиент, собранный с этим auth
+    // One auth API client built with the same auth instance.
     val authApi by lazy(LazyThreadSafetyMode.NONE) { AuthApiProvider.api(auth) }
 
     val appComponent: SaveAnOwlComponent by lazy {
@@ -32,7 +39,7 @@ class SaveAnOwlApplication : Application(), DefaultLifecycleObserver {
 
     val todosComponent: TodosComponent by lazy {
         DaggerTodosComponent.builder()
-            .application(this)                       // @BindsInstance
+            .application(this)
             .auth(auth)
             .appModule(AppModule(this))
             .build()
@@ -51,18 +58,26 @@ class SaveAnOwlApplication : Application(), DefaultLifecycleObserver {
         super<Application>.onCreate()
 
         VKID.init(this)
-
         appComponent.inject(this)
-        GameWorkerSetup.enqueueBackgroundSync<AuthorizedOwlWorker>(applicationContext)
-        // Подписываемся на жизненный цикл процесса, чтобы отловить уход в фон
+
+        // Do not enqueue authorized game work here unconditionally.
+        // MainActivity starts/cancels the periodic animal check from auth state.
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
     }
 
-    // Приложение ушло в фон (все активити стали STOPPED)
+    // The whole application process left the foreground.
     override fun onStop(owner: LifecycleOwner) {
-        // Запускаем фоновый синк через твой helper из модуля todos
-        SyncWorkerSetup.enqueueBackgroundSync<AuthorizedTodoSynWorker>(applicationContext)
+        applicationScope.launch {
+            if (!auth.isAuthorized().first()) {
+                return@launch
+            }
+
+            // Notes keep their existing background sync behavior.
+            SyncWorkerSetup.enqueueBackgroundSync<AuthorizedTodoSynWorker>(applicationContext)
+
+            // Game module: one backup/restore pass. The worker checks auth again at execution
+            // time in case the user logs out after this request has been queued.
+            GameWorkerSetup.enqueueOneTimeGameSync<AuthorizedGameSyncWorker>(applicationContext)
+        }
     }
-
-
 }

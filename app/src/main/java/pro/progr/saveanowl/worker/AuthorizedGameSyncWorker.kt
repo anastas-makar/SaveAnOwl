@@ -5,9 +5,9 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.flow.first
 import pro.progr.authvk.Auth
-import pro.progr.todos.work.doTodoSyncWork
+import pro.progr.owlgame.worker.doGameSyncWork
 
-class AuthorizedTodoSynWorker(
+class AuthorizedGameSyncWorker(
     appContext: Context,
     params: WorkerParameters
 ) : CoroutineWorker(appContext, params) {
@@ -19,6 +19,9 @@ class AuthorizedTodoSynWorker(
             return Result.success()
         }
 
-        return doTodoSyncWork(applicationContext, auth)
+        return doGameSyncWork(
+            applicationContext = applicationContext,
+            auth = auth
+        )
     }
 }
