@@ -37,6 +37,10 @@ class SaveAnOwlApplication : Application(), DefaultLifecycleObserver {
         DaggerSaveAnOwlComponent.factory().create(applicationContext)
     }
 
+    val personalCrypto by lazy(LazyThreadSafetyMode.NONE) {
+        appComponent.personalCrypto()
+    }
+
     val todosComponent: TodosComponent by lazy {
         DaggerTodosComponent.builder()
             .application(this)
