@@ -1,7 +1,6 @@
 package pro.progr.saveanowl.drawer
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.DrawerState
 import androidx.compose.material.ModalDrawer
 import androidx.compose.runtime.Composable
@@ -50,9 +49,7 @@ fun AppDrawer(
     ModalDrawer(
         drawerState = drawerState,
         drawerContent = {
-            if (widgetViewModel.isLoading.value) {
-                CircularProgressIndicator()
-            } else DrawerGridContent(
+            DrawerGridContent(
                 authState = authState,
                 onLogin = vm::signIn,
                 onLogout = vm::logout,

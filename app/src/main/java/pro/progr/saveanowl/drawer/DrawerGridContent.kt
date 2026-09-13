@@ -38,7 +38,6 @@ fun DrawerGridContent(
     navController: NavHostController,
     viewModel: WidgetViewModel
 ) {
-    val menuItems = viewModel.menuItems.value
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -108,20 +107,34 @@ fun DrawerGridContent(
             }
         }
 
-        if (isAuthorized) {
-            itemsIndexed(menuItems) { _, menuItem ->
-                DrawerMenuCard(
-                    menuItem = menuItem,
-                    onClick = {
-                        navController.navigate(menuItem.navigateTo)
-                    }
-                )
+        when {
+            !isAuthorized -> {
+                item(
+                    span = { GridItemSpan(maxLineSpan) }
+                ) {
+                    NotAuthorizedScreen("Войдите через VK ID, чтобы играть")
+                }
             }
-        } else {
-            item(
-                span = { GridItemSpan(maxLineSpan) }
-            ) {
-                NotAuthorizedScreen("Войдите через VK ID, чтобы играть")
+
+            viewModel.isLoading.value -> {
+                item(
+                    span = { GridItemSpan(maxLineSpan) }
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            }
+
+            else -> {
+                itemsIndexed(viewModel.menuItems.value) { _, menuItem ->
+                    DrawerMenuCard(
+                        menuItem = menuItem,
+                        onClick = {
+                            navController.navigate(menuItem.navigateTo)
+                        }
+                    )
+                }
             }
         }
     }
