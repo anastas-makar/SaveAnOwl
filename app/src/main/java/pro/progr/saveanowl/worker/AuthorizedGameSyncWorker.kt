@@ -6,6 +6,7 @@ import androidx.work.WorkerParameters
 import kotlinx.coroutines.flow.first
 import pro.progr.authvk.Auth
 import pro.progr.owlgame.worker.doGameSyncWork
+import pro.progr.saveanowl.SaveAnOwlApplication
 
 class AuthorizedGameSyncWorker(
     appContext: Context,
@@ -13,6 +14,7 @@ class AuthorizedGameSyncWorker(
 ) : CoroutineWorker(appContext, params) {
 
     override suspend fun doWork(): Result {
+        val app = applicationContext as SaveAnOwlApplication
         val auth = Auth(applicationContext)
 
         if (!auth.isAuthorized().first()) {
@@ -21,7 +23,8 @@ class AuthorizedGameSyncWorker(
 
         return doGameSyncWork(
             applicationContext = applicationContext,
-            auth = auth
+            auth = auth,
+            personalCrypto = app.personalCrypto
         )
     }
 }

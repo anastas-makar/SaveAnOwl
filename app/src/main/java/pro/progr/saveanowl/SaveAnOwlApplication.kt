@@ -45,6 +45,7 @@ class SaveAnOwlApplication : Application(), DefaultLifecycleObserver {
         DaggerTodosComponent.builder()
             .application(this)
             .auth(auth)
+            .personalCrypto(personalCrypto)
             .appModule(AppModule(this))
             .build()
     }
@@ -54,6 +55,7 @@ class SaveAnOwlApplication : Application(), DefaultLifecycleObserver {
             .application(this)
             .appModule(OwlGameModule(this))
             .auth(auth)
+            .personalCrypto(personalCrypto)
             .purchaseInterface(todosComponent.purchaseInterface())
             .build()
     }
