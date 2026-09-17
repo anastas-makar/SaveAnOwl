@@ -15,6 +15,7 @@ import pro.progr.authvk.AuthApiProvider
 import pro.progr.owlgame.dagger.DaggerOwlGameComponent
 import pro.progr.owlgame.dagger.OwlGameComponent
 import pro.progr.owlgame.dagger.OwlGameModule
+import pro.progr.owlgame.domain.model.GameLocale
 import pro.progr.owlgame.worker.GameWorkerSetup
 import pro.progr.saveanowl.worker.AuthorizedGameSyncWorker
 import pro.progr.saveanowl.worker.AuthorizedTodoSynWorker
@@ -41,6 +42,10 @@ class SaveAnOwlApplication : Application(), DefaultLifecycleObserver {
         appComponent.personalCrypto()
     }
 
+    val gameLocale: GameLocale by lazy(LazyThreadSafetyMode.NONE) {
+        GameLocale.fromLanguageCode(resources.configuration.locales[0].language)
+    }
+
     val todosComponent: TodosComponent by lazy {
         DaggerTodosComponent.builder()
             .application(this)
@@ -56,6 +61,7 @@ class SaveAnOwlApplication : Application(), DefaultLifecycleObserver {
             .appModule(OwlGameModule(this))
             .auth(auth)
             .personalCrypto(personalCrypto)
+            .gameLocale(gameLocale)
             .purchaseInterface(todosComponent.purchaseInterface())
             .build()
     }

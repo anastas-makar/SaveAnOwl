@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Спаси сову</string>
+    <string name="auth_error">Ошибка: %1$s</string>
+    <string name="sign_in_to_play">Войдите через VK ID, чтобы играть</string>
+</resources>

@@ -24,7 +24,8 @@ class AuthorizedGameSyncWorker(
         return doGameSyncWork(
             applicationContext = applicationContext,
             auth = auth,
-            personalCrypto = app.personalCrypto
+            personalCrypto = app.personalCrypto,
+            gameLocale = app.gameLocale
         )
     }
 }

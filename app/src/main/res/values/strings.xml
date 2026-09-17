@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Спаси сову</string>
+    <string name="app_name">Save an Owl</string>
+    <string name="auth_error">Error: %1$s</string>
+    <string name="sign_in_to_play">Sign in with VK ID to play</string>
 </resources>

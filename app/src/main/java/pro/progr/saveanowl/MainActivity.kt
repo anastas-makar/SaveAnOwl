@@ -66,7 +66,8 @@ class MainActivity : ComponentActivity() {
                                 val result = runGameSync(
                                     applicationContext = applicationContext,
                                     auth = app.auth,
-                                    personalCrypto = app.personalCrypto
+                                    personalCrypto = app.personalCrypto,
+                                    gameLocale = app.gameLocale
                                 )
                                 Log.d("GameSync", "Foreground sync result: $result")
                             } catch (e: CancellationException) {

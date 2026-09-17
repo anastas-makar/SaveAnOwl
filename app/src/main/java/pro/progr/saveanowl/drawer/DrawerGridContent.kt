@@ -16,6 +16,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import pro.progr.authvk.AuthUiState
@@ -25,6 +26,7 @@ import pro.progr.authvk.VkWelcomeRow
 import pro.progr.diamondtimer.TimerDrawerWidget
 import pro.progr.fallingdiamonds.composable.SundukDrawerWidget
 import pro.progr.owlgame.presentation.viewmodel.WidgetViewModel
+import pro.progr.saveanowl.R
 import androidx.compose.foundation.layout.safeDrawingPadding
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -74,7 +76,7 @@ fun DrawerGridContent(
 
                 is AuthUiState.Error -> {
                     Text(
-                        text = "Ошибка: ${s.message}",
+                        text = stringResource(R.string.auth_error, s.message),
                         modifier = Modifier.padding(16.dp)
                     )
                 }
@@ -112,7 +114,7 @@ fun DrawerGridContent(
                 item(
                     span = { GridItemSpan(maxLineSpan) }
                 ) {
-                    NotAuthorizedScreen("Войдите через VK ID, чтобы играть")
+                    NotAuthorizedScreen(stringResource(R.string.sign_in_to_play))
                 }
             }
 
