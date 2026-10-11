@@ -35,7 +35,8 @@ fun AppDrawer(
         factory = VkAuthViewModelFactory(
             auth = app.auth,
             personalCrypto = app.personalCrypto,
-            api = app.authApi
+            api = app.authApi,
+            context = app
         )
     )
     val authState by vm.ui.collectAsState()
