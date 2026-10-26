@@ -18,6 +18,9 @@ import pro.progr.owlgame.worker.GameWorkerSetup
 import pro.progr.owlgame.worker.runGameSync
 import pro.progr.saveanowl.worker.AuthorizedAnimalArrivalWorker
 import java.io.IOException
+import pro.progr.todos.api.SyncApiException
+import pro.progr.todos.work.SyncUpdateRequiredStore
+import pro.progr.todos.composable.SyncUpdateRequiredDialog
 
 class MainActivity : ComponentActivity() {
 
@@ -54,6 +57,19 @@ class MainActivity : ComponentActivity() {
                                 app.todosComponent.syncRepository().sync()
                             } catch (e: CancellationException) {
                                 throw e
+                            } catch (e: SyncApiException) {
+                                if (e.httpStatus == 426 || e.errorCode == "APP_UPDATE_REQUIRED") {
+                                    val saved = SyncUpdateRequiredStore.record(
+                                        applicationContext,
+                                        e.minimumSyncProtocolVersion
+                                    )
+                                    Log.w(
+                                        "TodosSync",
+                                        "App update required: status=${e.httpStatus}, saved=$saved"
+                                    )
+                                } else {
+                                    Log.e("TodosSync", "Sync API error: status=${e.httpStatus}", e)
+                                }
                             } catch (e: IOException) {
                                 Log.w("TodosSync", "Network error during sync", e)
                             } catch (t: Throwable) {
@@ -96,6 +112,8 @@ class MainActivity : ComponentActivity() {
                     "todos"
                 }
             )
+
+            SyncUpdateRequiredDialog()
         }
     }
 }
