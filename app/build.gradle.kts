@@ -7,6 +7,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
     id("com.google.devtools.ksp")
     id("vkid.manifest.placeholders")
+    id("ru.ok.tracer") version "1.6.0"
 }
 
 val lp = gradleLocalProperties(rootDir, providers)
@@ -81,6 +82,17 @@ configurations.all {
     }
 }
 
+val tracerPluginToken = lp.getProperty("TRACER_PLUGIN_TOKEN")
+val tracerAppToken = lp.getProperty("TRACER_APP_TOKEN")
+
+tracer {
+    create("defaultConfig") {
+        pluginToken = tracerPluginToken
+        appToken = tracerAppToken
+        uploadMapping = true
+    }
+}
+
 dependencies {
     implementation("androidx.core:core-ktx:1.17.0")
     implementation("androidx.appcompat:appcompat:1.7.1")
@@ -127,6 +139,8 @@ dependencies {
 
     implementation("com.vk.id:vkid:2.5.1")
 
+    implementation("ru.ok.tracer:tracer-crash-report:1.6.0")
+
     // Uncomment if needed
     // implementation("com.google.dagger:dagger-android:2.48")
     // implementation("com.google.dagger:dagger-android-support:2.48")
@@ -143,3 +157,4 @@ dependencies {
     implementation("pro.progr:auth-vk:1.1.1-alpha")
     implementation("pro.progr:personal-crypto:0.0.1-alpha")
 }
+

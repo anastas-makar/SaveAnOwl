@@ -23,8 +23,11 @@ import pro.progr.todos.dagger2.AppModule
 import pro.progr.todos.dagger2.DaggerTodosComponent
 import pro.progr.todos.dagger2.TodosComponent
 import pro.progr.todos.work.SyncWorkerSetup
+import ru.ok.tracer.HasTracerConfiguration
+import ru.ok.tracer.TracerConfiguration
+import ru.ok.tracer.crash.report.CrashReportConfiguration
 
-class SaveAnOwlApplication : Application(), DefaultLifecycleObserver {
+class SaveAnOwlApplication : Application(), DefaultLifecycleObserver, HasTracerConfiguration {
 
     private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
@@ -45,6 +48,14 @@ class SaveAnOwlApplication : Application(), DefaultLifecycleObserver {
     val gameLocale: GameLocale by lazy(LazyThreadSafetyMode.NONE) {
         GameLocale.fromLanguageCode(resources.configuration.locales[0].language)
     }
+
+    override val tracerConfiguration: List<TracerConfiguration>
+        get() = listOf(
+            CrashReportConfiguration.build {
+                setEnabled(true)
+                setSendAnr(true)
+            }
+        )
 
     val todosComponent: TodosComponent by lazy {
         DaggerTodosComponent.builder()
