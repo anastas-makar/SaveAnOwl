@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import pro.progr.authvk.Auth
 import pro.progr.authvk.AuthApiProvider
+import pro.progr.diagnostics.Diagnostics
 import pro.progr.owlgame.dagger.DaggerOwlGameComponent
 import pro.progr.owlgame.dagger.OwlGameComponent
 import pro.progr.owlgame.dagger.OwlGameModule
@@ -32,7 +33,9 @@ class SaveAnOwlApplication : Application(), DefaultLifecycleObserver, HasTracerC
     private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     // One auth instance for the whole application.
-    val auth by lazy(LazyThreadSafetyMode.NONE) { Auth(this) }
+    val diagnostics: Diagnostics = TracerDiagnostics
+
+    val auth by lazy(LazyThreadSafetyMode.NONE) { Auth(this, diagnostics) }
 
     // One auth API client built with the same auth instance.
     val authApi by lazy(LazyThreadSafetyMode.NONE) { AuthApiProvider.api(auth) }

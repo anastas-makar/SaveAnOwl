@@ -52,6 +52,14 @@ dependencyResolutionManagement {
         }
 
         maven {
+            url = uri("https://maven.pkg.github.com/anastas-makar/Diagnostics")
+            credentials {
+                username = System.getenv("GITHUB_USERNAME")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+
+        maven {
             url =
                 uri("https://artifactory-external.vkpartner.ru/artifactory/vkid-sdk-android/")
         }

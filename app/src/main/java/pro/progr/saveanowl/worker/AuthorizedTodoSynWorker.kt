@@ -15,7 +15,7 @@ class AuthorizedTodoSynWorker(
 
     override suspend fun doWork(): Result {
         val app = applicationContext as SaveAnOwlApplication
-        val auth = Auth(applicationContext)
+        val auth = Auth(applicationContext, app.diagnostics)
 
         if (!auth.isAuthorized().first()) {
             return Result.success()

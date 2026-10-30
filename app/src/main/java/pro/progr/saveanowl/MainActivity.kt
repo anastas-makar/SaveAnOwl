@@ -54,11 +54,14 @@ class MainActivity : ComponentActivity() {
                     supervisorScope {
                         launch(Dispatchers.IO) {
                             try {
+                                app.diagnostics.breadcrumb("todos_sync: foreground_started")
                                 app.todosComponent.syncRepository().sync()
+                                app.diagnostics.breadcrumb("todos_sync: foreground_succeeded")
                             } catch (e: CancellationException) {
                                 throw e
                             } catch (e: SyncApiException) {
                                 if (e.httpStatus == 426 || e.errorCode == "APP_UPDATE_REQUIRED") {
+                                    app.diagnostics.breadcrumb("todos_sync: update_required status=${e.httpStatus}")
                                     val saved = SyncUpdateRequiredStore.record(
                                         applicationContext,
                                         e.minimumSyncProtocolVersion
@@ -68,29 +71,44 @@ class MainActivity : ComponentActivity() {
                                         "App update required: status=${e.httpStatus}, saved=$saved"
                                     )
                                 } else {
+                                    app.diagnostics.breadcrumb("todos_sync: api_error status=${e.httpStatus}")
+                                    if (e.httpStatus >= 500) {
+                                        app.diagnostics.reportNonFatal(
+                                            e,
+                                            issueKey = "todos_sync_server_error"
+                                        )
+                                    }
                                     Log.e("TodosSync", "Sync API error: status=${e.httpStatus}", e)
                                 }
                             } catch (e: IOException) {
+                                app.diagnostics.breadcrumb("todos_sync: network_error")
                                 Log.w("TodosSync", "Network error during sync", e)
                             } catch (t: Throwable) {
+                                app.diagnostics.breadcrumb("todos_sync: unexpected_error type=${t.javaClass.simpleName}")
+                                app.diagnostics.reportNonFatal(t, issueKey = "todos_sync_unexpected")
                                 Log.e("TodosSync", "Unexpected error during sync", t)
                             }
                         }
 
                         launch(Dispatchers.IO) {
                             try {
+                                app.diagnostics.breadcrumb("game_sync: foreground_started")
                                 val result = runGameSync(
                                     applicationContext = applicationContext,
                                     auth = app.auth,
                                     personalCrypto = app.personalCrypto,
                                     gameLocale = app.gameLocale
                                 )
+                                app.diagnostics.breadcrumb("game_sync: foreground_succeeded")
                                 Log.d("GameSync", "Foreground sync result: $result")
                             } catch (e: CancellationException) {
                                 throw e
                             } catch (e: IOException) {
+                                app.diagnostics.breadcrumb("game_sync: network_error")
                                 Log.w("GameSync", "Network error during foreground sync", e)
                             } catch (t: Throwable) {
+                                app.diagnostics.breadcrumb("game_sync: unexpected_error type=${t.javaClass.simpleName}")
+                                app.diagnostics.reportNonFatal(t, issueKey = "game_sync_unexpected")
                                 Log.e("GameSync", "Unexpected foreground sync error", t)
                             }
                         }

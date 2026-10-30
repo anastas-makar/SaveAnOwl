@@ -140,6 +140,7 @@ dependencies {
     implementation("com.vk.id:vkid:2.5.1")
 
     implementation("ru.ok.tracer:tracer-crash-report:1.6.0")
+    implementation("pro.progr:diagnostics:0.1.0-alpha")
 
     // Uncomment if needed
     // implementation("com.google.dagger:dagger-android:2.48")
@@ -154,7 +155,7 @@ dependencies {
     implementation("pro.progr:auth-api:0.0.3-alpha")
     implementation("pro.progr:todos:0.0.2-alpha")
     implementation("pro.progr:diamondtimer:1.0.0-alpha")
-    implementation("pro.progr:auth-vk:1.1.1-alpha")
+    implementation("pro.progr:auth-vk:1.1.2-alpha")
     implementation("pro.progr:personal-crypto:0.0.1-alpha")
 }
 

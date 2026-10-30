@@ -36,7 +36,8 @@ fun AppDrawer(
             auth = app.auth,
             personalCrypto = app.personalCrypto,
             api = app.authApi,
-            context = app
+            context = app,
+            diagnostics = app.diagnostics
         )
     )
     val authState by vm.ui.collectAsState()
