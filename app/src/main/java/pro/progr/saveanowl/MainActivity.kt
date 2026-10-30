@@ -97,7 +97,8 @@ class MainActivity : ComponentActivity() {
                                     applicationContext = applicationContext,
                                     auth = app.auth,
                                     personalCrypto = app.personalCrypto,
-                                    gameLocale = app.gameLocale
+                                    gameLocale = app.gameLocale,
+                                    diagnostics = app.diagnostics
                                 )
                                 app.diagnostics.breadcrumb("game_sync: foreground_succeeded")
                                 Log.d("GameSync", "Foreground sync result: $result")
@@ -107,8 +108,8 @@ class MainActivity : ComponentActivity() {
                                 app.diagnostics.breadcrumb("game_sync: network_error")
                                 Log.w("GameSync", "Network error during foreground sync", e)
                             } catch (t: Throwable) {
+                                if (t is Error) throw t
                                 app.diagnostics.breadcrumb("game_sync: unexpected_error type=${t.javaClass.simpleName}")
-                                app.diagnostics.reportNonFatal(t, issueKey = "game_sync_unexpected")
                                 Log.e("GameSync", "Unexpected foreground sync error", t)
                             }
                         }

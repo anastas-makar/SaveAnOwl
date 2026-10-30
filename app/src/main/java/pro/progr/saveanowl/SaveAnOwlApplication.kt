@@ -72,7 +72,7 @@ class SaveAnOwlApplication : Application(), DefaultLifecycleObserver, HasTracerC
     val owlGameComponent: OwlGameComponent by lazy {
         DaggerOwlGameComponent.builder()
             .application(this)
-            .appModule(OwlGameModule(this))
+            .appModule(OwlGameModule(this, diagnostics))
             .auth(auth)
             .personalCrypto(personalCrypto)
             .gameLocale(gameLocale)

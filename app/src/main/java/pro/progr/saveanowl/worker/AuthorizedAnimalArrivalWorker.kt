@@ -23,7 +23,8 @@ class AuthorizedAnimalArrivalWorker(
 
         return doAnimalArrivalCheckWork(
             applicationContext = applicationContext,
-            auth = auth
+            auth = auth,
+            diagnostics = app.diagnostics
         )
     }
 }

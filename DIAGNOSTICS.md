@@ -5,11 +5,15 @@ API to this app's Tracer project. `AuthVk` receives it through
 `VkAuthViewModelFactory` and the app's `Auth` instance; no Tracer dependency is
 added to reusable business modules.
 
-The current coverage is limited to app-level foreground sync handling and
-authentication / local session recovery. Expected network failures are recorded
-as breadcrumbs only. Unexpected handled errors and selected server/Keystore
-failures are sent as non-fatals. Cancellation and the expected
-`APP_UPDATE_REQUIRED` response are not reported as non-fatals.
+The app provides the Tracer adapter to AuthVk and OwlGame. OwlGame receives the
+same `Diagnostics` instance through `OwlGameModule`; its sync, selected gameplay
+operations, and background animal-arrival check emit breadcrumbs and non-fatal
+reports for handled failures. Todos coverage remains at the app-level
+foreground sync handler. Expected Todos network failures and the
+`APP_UPDATE_REQUIRED` response are breadcrumbs only.
+
+AuthVk and OwlGame exclude coroutine cancellation from non-fatal reporting.
+Unexpected handled errors and selected server failures are sent as non-fatals.
 
 Tracer reports deliberately omit exception messages and causes because they can
 contain server or user data. The original stack trace is retained. Breadcrumbs
@@ -20,8 +24,9 @@ response bodies, note contents, or game data to diagnostic events.
 ## Build and publish order
 
 `pro.progr:diagnostics:0.1.0-alpha` must already be available in GitHub Packages.
-Then build and publish AuthVk as `pro.progr:auth-vk:1.1.2-alpha`. After that,
-sync and build SaveAnOwl, which resolves the new AuthVk version.
+Then build and publish AuthVk as `pro.progr:auth-vk:1.1.2-alpha` and OwlGame as
+`pro.progr:owlgame:0.0.3-alpha`. After both packages are published, sync and
+build SaveAnOwl, which resolves those versions.
 
 ## Manual smoke check
 
